@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema de Estacionamento</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <nav style="width: 200px; position: fixed; height: 100%; background-color: #f8f9fa;">
+        <ul>
+            <li><a href="index.html">Enviar</a></li>
+            <li><a href="consultar.html">Consultar</a></li>
+        </ul>
+    </nav>
+    <div style="margin-left: 200px;">
+    <h1>Sistema de Estacionamento</h1>
+    <form id="myForm" action="/submit-form" method="POST" class="center">
+        <label for="marca">Marca:</label><br>
+        <input type="text" id="marca" name="marca" class="large-input"><br>
+        <label for="modelo">Modelo:</label><br>
+        <input type="text" id="modelo" name="modelo" class="large-input"><br>
+        <label for="placa">Placa:</label><br>
+        <input type="text" id="placa" name="placa" class="large-input" maxlength="8"><br>
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" class="large-input"><br>
+        <label for="cpf">CPF:</label><br>
+        <input type="text" id="cpf" name="cpf" class="large-input"><br>
+        <input type="submit" value="Enviar">
+        <div id="tableContainer"></div>
+        
+    </form>
+    <div id="newTableContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+// Obtém o elemento do formulário pelo seu ID e adiciona um ouvinte de evento 'submit'
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    // Previne a ação padrão do formulário (que seria enviar o formulário e recarregar a página)
+    event.preventDefault();
+
+    // Cria um novo objeto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    // Inicializa uma nova requisição POST para a URL '/submit-form'
+    xhr.open('POST', '/submit-form', true);
+    // Define o cabeçalho 'Content-Type' da requisição como 'application/x-www-form-urlencoded'
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() {
+        if (this.status === 200) {
+            alert('Dados recebido com sucesso!');
+            fetchData();
+        } else {
+            alert(this.responseText);
+        }
+    };
+
+    var form = document.getElementById('myForm');
+    var data = new FormData(form);
+    var params = new URLSearchParams(data).toString();
+
+    xhr.send(params);
+});
+</script>
