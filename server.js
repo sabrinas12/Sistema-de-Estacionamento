@@ -9,20 +9,18 @@ const db = mysql.createConnection({
     user: 'root',
     password: 'admin',
     database: 'estacionamento'
-  });
-  
-// Conecta ao banco de dados
-db.connect((err) => {
-if (err) {
-    throw err;
-}
-console.log('Connected to the database');
 });
 
-// Defina a pasta pública como a pasta de arquivos estáticos
+// Conecta ao banco de dados
+db.connect((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to the database');
+});
+
 app.use(express.static('public'));
 
-// Para analisar corretamente os corpos das solicitações em formato urlencoded
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
@@ -71,6 +69,48 @@ app.delete('/delete-row/:id', (req, res) => {
             res.status(500).send('Erro ao excluir o registro');
         } else {
             res.send('Registro excluído com sucesso');
+        }
+    });
+});
+
+// Endpoint para obter o horário de entrada de um veículo
+app.get('/get-entry-time/:id', (req, res) => {
+    const id = req.params.id;
+    const query = 'SELECT data_entrada FROM veiculos WHERE id = ?';
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            res.status(500).send(err.sqlMessage);
+        } else {
+            res.send(results[0].data_entrada);
+        }
+    });
+});
+
+// Endpoint para registrar a saída de um veículo
+
+app.post('/update-exit', (req, res) => {
+    console.log(req.body);
+
+    const { id, price, exitTime } = req.body;
+
+    if (!id || !price || !exitTime) {
+        return res.status(400).send('Missing required fields');
+    }
+
+    // Formate exitTime para o formato correto
+    const formattedExitTime = new Date(exitTime).toISOString().slice(0, 19).replace('T', ' ');
+
+    console.log(formattedExitTime);
+
+    const query = 'UPDATE veiculos SET data_saida = ?, valor = ? WHERE id = ?';
+    db.query(query, [formattedExitTime, price, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Server error');
+        } else {
+            console.log(result);
+            res.send('Update successful');
         }
     });
 });
