@@ -6,7 +6,7 @@ function fetchData() {
     xhr.open('GET', '/fetch-data', true);
 
     // Define o que acontece quando a requisição é carregada
-    xhr.onload = function() {
+    xhr.onload = function () {
         // Se o status da requisição é 200 (sucesso)
         if (this.status === 200) {
             // Converte a resposta JSON em um objeto JavaScript
@@ -41,12 +41,24 @@ function fetchData() {
                 // Adiciona um botão de exclusão a cada linha
                 var deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Excluir';
-                deleteButton.onclick = function() {
+                deleteButton.onclick = function () {
                     deleteRow(item.id);
                 };
                 var td = document.createElement('td');
                 td.appendChild(deleteButton);
                 tr.appendChild(td);
+
+                tbody.appendChild(tr);
+                //nova parte do codigo para adicionar um botão de registrar saida
+                // Adiciona um botão de registrar saída a cada linha
+                var exitButton = document.createElement('button');
+                exitButton.textContent = 'Registrar Saída';
+                exitButton.onclick = function () {
+                    registerExit(item.id);
+                };
+                var tdExit = document.createElement('td');
+                tdExit.appendChild(exitButton);
+                tr.appendChild(tdExit);
 
                 tbody.appendChild(tr);
             });
@@ -71,12 +83,58 @@ window.onload = fetchData;
 function deleteRow(id) {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', '/delete-row/' + id, true);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (this.status === 200) {
             // Recarrega a página para atualizar a tabela
             location.reload();
         } else {
             console.error('Erro ao excluir a linha: ' + this.status);
+        }
+    };
+    xhr.send();
+
+}
+
+// Função para registrar a saída de um veículo
+function registerExit(id) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/get-entry-time/' + id, true);
+    xhr.onload = function () {
+        if (this.status === 200) {
+            var entryTime = new Date(this.responseText.replace(/"/g, ''));
+            var exitTime = new Date();
+            var duration = Math.abs(exitTime - entryTime) / 36e5; // Duração em horas
+
+            // Log the times and duration
+            console.log('Entry Time:', entryTime);
+            console.log('Exit Time:', exitTime);
+            console.log('Duration (hours):', duration);
+            console.log('Response Text:', this.responseText);
+
+            var price;
+            if (duration <= 3) {
+                price = 20;
+            } else if (duration <= 4) {
+                price = 20 + 3 * (duration - 3);
+            } else {
+                price = 35;
+            }
+
+            // Create a new XMLHttpRequest to update the database
+            var updateXhr = new XMLHttpRequest();
+            updateXhr.open('POST', '/update-exit', true);
+            updateXhr.setRequestHeader('Content-Type', 'application/json');
+            updateXhr.onerror = function () {
+                console.error('Erro ao atualizar a saída:', this.status);
+            };
+
+            var formattedExitTime = exitTime.toISOString().slice(0, 19).replace('T', ' ');
+            console.log({ id: id, price: price, exitTime: exitTime.toISOString() })
+
+            updateXhr.send(JSON.stringify({ id: id, price: price, exitTime: formattedExitTime }));
+
+            // Adicione esta linha para mostrar um popup com o preço
+            alert('Saída registrada com sucesso! Preço: ' + price);
         }
     };
     xhr.send();
