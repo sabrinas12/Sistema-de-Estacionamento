@@ -49,7 +49,7 @@ function fetchData() {
                 tr.appendChild(td);
 
                 tbody.appendChild(tr);
-                
+                //nova parte do codigo para adicionar um botão de registrar saida
                 // Adiciona um botão de registrar saída a cada linha
                 var exitButton = document.createElement('button');
                 exitButton.textContent = 'Registrar Saída';
@@ -120,19 +120,7 @@ function registerExit(id) {
                 price = 35;
             }
 
-            // Create a new XMLHttpRequest to update the database
-            var updateXhr = new XMLHttpRequest();
-            updateXhr.open('POST', '/update-exit', true);
-            updateXhr.setRequestHeader('Content-Type', 'application/json');
-            updateXhr.onerror = function () {
-                console.error('Erro ao atualizar a saída:', this.status);
-            };
-
-            var formattedExitTime = exitTime.toISOString().slice(0, 19).replace('T', ' ');
-            console.log({ id: id, price: price, exitTime: exitTime.toISOString() })
-
-            updateXhr.send(JSON.stringify({ id: id, price: price, exitTime: formattedExitTime }));
-
+            deleteRow(id);
             alert('Saída registrada com sucesso! Preço: ' + price);
         }
     };
