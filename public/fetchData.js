@@ -105,7 +105,6 @@ function registerExit(id) {
             var exitTime = new Date();
             var duration = Math.abs(exitTime - entryTime) / 36e5; // Duração em horas
 
-            // Log the times and duration
             console.log('Entry Time:', entryTime);
             console.log('Exit Time:', exitTime);
             console.log('Duration (hours):', duration);
