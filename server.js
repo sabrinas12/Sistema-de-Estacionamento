@@ -87,33 +87,6 @@ app.get('/get-entry-time/:id', (req, res) => {
     });
 });
 
-// Endpoint para registrar a saída de um veículo
-
-app.post('/update-exit', (req, res) => {
-    console.log(req.body);
-
-    const { id, price, exitTime } = req.body;
-
-    if (!id || !price || !exitTime) {
-        return res.status(400).send('Missing required fields');
-    }
-    
-    const formattedExitTime = new Date(exitTime).toISOString().slice(0, 19).replace('T', ' ');
-
-    console.log(formattedExitTime);
-
-    const query = 'UPDATE veiculos SET data_saida = ?, valor = ? WHERE id = ?';
-    db.query(query, [formattedExitTime, price, id], (err, result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Server error');
-        } else {
-            console.log(result);
-            res.send('Update successful');
-        }
-    });
-});
-
 app.listen(3000, () => {
     console.log('App listening on port 3000');
 });
