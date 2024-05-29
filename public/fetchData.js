@@ -133,7 +133,6 @@ function registerExit(id) {
 
             updateXhr.send(JSON.stringify({ id: id, price: price, exitTime: formattedExitTime }));
 
-            // Adicione esta linha para mostrar um popup com o preço
             alert('Saída registrada com sucesso! Preço: ' + price);
         }
     };
