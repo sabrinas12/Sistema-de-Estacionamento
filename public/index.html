@@ -38,6 +38,19 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
     // Previne a ação padrão do formulário (que seria enviar o formulário e recarregar a página)
     event.preventDefault();
 
+    // Pega os valores dos inputs
+    var marca = document.getElementById('marca').value;
+    var modelo = document.getElementById('modelo').value;
+    var placa = document.getElementById('placa').value;
+    var nome = document.getElementById('nome').value;
+    var cpf = document.getElementById('cpf').value;
+
+    // Verifica se algum dos inputs está vazio
+    if (!marca || !modelo || !placa || !nome || !cpf) {
+        alert('Por favor, preencha todos os campos.');
+        return; // Interrompe a execução da função
+    }
+
     // Cria um novo objeto XMLHttpRequest
     var xhr = new XMLHttpRequest();
     // Inicializa uma nova requisição POST para a URL '/submit-form'
