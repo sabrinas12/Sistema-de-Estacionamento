@@ -97,8 +97,7 @@ app.post('/update-exit', (req, res) => {
     if (!id || !price || !exitTime) {
         return res.status(400).send('Missing required fields');
     }
-
-    // Formate exitTime para o formato correto
+    
     const formattedExitTime = new Date(exitTime).toISOString().slice(0, 19).replace('T', ' ');
 
     console.log(formattedExitTime);
