@@ -26,9 +26,7 @@ CREATE TABLE veiculos (
     placa VARCHAR(8) NOT NULL,
     marca VARCHAR(10) NOT NULL,
     modelo VARCHAR(15) NOT NULL,
-    valor double,
-    data_entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
-    data_saida DATETIME
+    data_entrada DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
