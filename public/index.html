@@ -12,7 +12,7 @@
         </ul>
     </nav>
     <div style="margin-left: 200px;">
-    <h1>Sistema de Estacionamento</h1>
+    <h1>Sistema de Estacionamento - EstacioTech</h1>
     <form id="myForm" action="/submit-form" method="POST" class="center">
         <label for="marca">Marca:</label><br>
         <input type="text" id="marca" name="marca" class="large-input"><br>
@@ -29,7 +29,6 @@
         
     </form>
     <div id="newTableContainer"></div>
-    <script src="script.js"></script>
 </body>
 </html>
 
@@ -48,7 +47,7 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
 
     xhr.onload = function() {
         if (this.status === 200) {
-            alert('Dados recebido com sucesso!');
+            alert('Dados inseridos com sucesso!');
             fetchData();
         } else {
             alert(this.responseText);
