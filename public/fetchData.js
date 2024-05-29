@@ -49,7 +49,7 @@ function fetchData() {
                 tr.appendChild(td);
 
                 tbody.appendChild(tr);
-                //nova parte do codigo para adicionar um botão de registrar saida
+                
                 // Adiciona um botão de registrar saída a cada linha
                 var exitButton = document.createElement('button');
                 exitButton.textContent = 'Registrar Saída';
