@@ -30,6 +30,6 @@ CREATE TABLE veiculos (
 );
 ```
 
-Após a configuração do banco de dados, utilize o Node.js para executar o código do arquivo server.js, executando o comando node `server.js` no terminal. Em seguida, acesse o projeto inserindo a URL `http://localhost:3000/index.html` no navegador.
+Após a configuração do banco de dados, utilize o Node.js para executar o código do arquivo server.js, executando o comando `node server.js` no terminal. Em seguida, acesse o projeto inserindo a URL `http://localhost:3000/index.html` no navegador.
 
 **Aviso:** Para utilizar o projeto, é necessário dissipar as dependências da pasta `node_modules` para executar o código no terminal.
